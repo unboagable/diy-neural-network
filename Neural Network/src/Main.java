@@ -1,3 +1,5 @@
+import Neuron.Perceptron;
+
 /**
  * 
  */
@@ -12,8 +14,9 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		Perceptron p = new Perceptron(3);
+		double[] point = {50,-12,1};
+		int result = p.feedforward(point);
 	}
 
 }
