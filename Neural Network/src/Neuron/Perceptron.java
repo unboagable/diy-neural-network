@@ -10,6 +10,7 @@ import java.util.Random;
  *
  */
 public class Perceptron {
+	double c = 0.01;
 	double[] inputs  = {12 , 4};
 	double[] weights = {0.5,-1};
 	
@@ -27,6 +28,14 @@ public class Perceptron {
 	    }//Result is the sign of the sum, -1 or +1. Here the perceptron is making a guess. Is it on one side of the line or the other?
 	    return activate(sum);
 	  }
+	
+	void train(double[] inputs, int desired) {
+		int guess = feedforward(inputs);
+		double error = desired - guess;
+		for (int i = 0; i < weights.length; i++) {
+			weights[i] += c * error * inputs[i];
+		}
+	}
 	
 	int activate(double sum) {
 		//Return a 1 if positive, -1 if negative.
