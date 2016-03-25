@@ -1,7 +1,7 @@
 /**
  * 
  */
-package Neuron;
+package neuralNetwork;
 
 import java.util.Random;
 
@@ -9,10 +9,12 @@ import java.util.Random;
  * @author Chang-Hyun
  *
  */
+
+//http://natureofcode.com/book/chapter-10-neural-networks/
+
 public class Perceptron {
 	double c = 0.01;
-	double[] inputs  = {12 , 4};
-	double[] weights = {0.5,-1};
+	double[] weights;
 	
 	public Perceptron(int n) {
 		weights = new double[n];
@@ -29,7 +31,7 @@ public class Perceptron {
 	    return activate(sum);
 	  }
 	
-	void train(double[] inputs, int desired) {
+	public void train(double[] inputs, int desired) {
 		int guess = feedforward(inputs);
 		double error = desired - guess;
 		for (int i = 0; i < weights.length; i++) {
@@ -37,7 +39,7 @@ public class Perceptron {
 		}
 	}
 	
-	int activate(double sum) {
+	private int activate(double sum) {
 		//Return a 1 if positive, -1 if negative.
 		  if (sum > 0) return 1;
 		  else return -1;

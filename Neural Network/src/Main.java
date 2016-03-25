@@ -1,4 +1,4 @@
-import Neuron.Perceptron;
+import neuralNetwork.Perceptron;
 
 /**
  * 
