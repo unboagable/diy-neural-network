@@ -1,7 +1,7 @@
 /**
  * 
  */
-package neuralNetwork;
+package singlePerceptron;
 
 import java.util.Random;
 

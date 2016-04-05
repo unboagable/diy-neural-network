@@ -1,4 +1,4 @@
-package gui;
+package singlePerceptron;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,9 +6,6 @@ import java.awt.Graphics;
 import java.util.Random;
 
 import javax.swing.JPanel;
-
-import neuralNetwork.Perceptron;
-import neuralNetwork.Trainer;
 
 public class PerceptronPanel extends JPanel {
 	/**

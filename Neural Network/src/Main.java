@@ -1,4 +1,4 @@
-import neuralNetwork.PerceptronSimulation;
+import singlePerceptron.PerceptronSimulation;
 
 /**
  * 
