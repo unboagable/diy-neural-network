@@ -14,10 +14,10 @@ import java.util.Random;
 
 public class Perceptron {
 	double c = 0.01;
-	double[] weights;
+	private double[] weights;
 	
 	public Perceptron(int n) {
-		weights = new double[n];
+		weights=new double[n];
 		for (int i = 0; i < weights.length; i++) {//The weights are picked randomly to start.
 			weights[i] = random(-1,1);
 		}
@@ -50,5 +50,9 @@ public class Perceptron {
 		double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
 		return randomValue;
 	}
-
+	
+	public double[] getWeights() {
+		return weights;
+	}
+	
 }

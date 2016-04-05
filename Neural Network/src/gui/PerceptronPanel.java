@@ -26,6 +26,11 @@ public class PerceptronPanel extends JPanel {
 		return 0.5*x+1;
 	}
 	
+	double fPtron(double x){  //formula for a line
+		double[] pweights=ptron.getWeights();
+		return (-1*pweights[0]/pweights[1])*x+(-1*pweights[2]/pweights[1]);
+	}
+	
 	public void setup() {
 		super.setPreferredSize(new Dimension(width, height));
 
@@ -61,20 +66,25 @@ public class PerceptronPanel extends JPanel {
 		// For animation, we are training one point at a time.
 		count = (count + 1) % training.length;
 		
-		g.drawLine(0, (int)f(0), 640, (int)f(640));
+		g.drawLine(0, xyCordinateY((int)f(0)), width, xyCordinateY((int)f(width)));
+		g.drawLine(0, xyCordinateY((int)fPtron(0)), width, xyCordinateY((int)fPtron(width)));
 		
 		int guess;
 		for (int i = 0; i < count; i++) {
 			guess = ptron.feedforward(training[i].inputs);
 			//[full] Show the classification—no fill for -1, black for +1.
-			g.drawOval((int) training[i].inputs[0]-4, (int) training[i].inputs[1]-4, 8, 8);
-			if (guess > 0) {g.fillOval((int) training[i].inputs[0]-4,(int) training[i].inputs[1]-4, 8, 8);}
+			g.drawOval((int) training[i].inputs[0]-4, xyCordinateY((int) training[i].inputs[1]-4), 8, 8);
+			if (guess > 0) {g.fillOval((int) training[i].inputs[0]-4,xyCordinateY((int) training[i].inputs[1]-4), 8, 8);}
 		}
 		
 	}
 	
 	public void oneMoreTraining() {
 		repaint();
+	}
+	
+	private int xyCordinateY(int y){
+		return height-y;
 	}
 	
 }
