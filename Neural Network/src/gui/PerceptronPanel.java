@@ -1,0 +1,80 @@
+package gui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.util.Random;
+
+import javax.swing.JPanel;
+
+import neuralNetwork.Perceptron;
+import neuralNetwork.Trainer;
+
+public class PerceptronPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4674391243062016404L;
+	Perceptron ptron;
+	Random r = new Random();
+	Trainer[] training = new Trainer[2000];
+	int count = 0;
+	private int width=640;
+	private int height=360;
+
+	double f(double x){  //formula for a line
+		return 0.5*x+1;
+	}
+	
+	public void setup() {
+		super.setPreferredSize(new Dimension(width, height));
+
+		ptron = new Perceptron(3);
+
+		// Make 2,000 training points.
+		for (int i = 0; i < training.length; i++) {
+			double x = random(0,width);
+			double y = random(0,height);
+			//[full] Is the correct answer 1 or -1?
+			int answer = 1;
+			if (y < f(x)) answer = -1;
+			//[end]
+			training[i] = new Trainer(x, y, answer);
+		}
+		
+		
+	}
+
+
+	private double random(int rangeMin, int rangeMax) {
+		double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+		return randomValue;
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		
+		super.paintComponent(g);
+		setBackground(Color.WHITE);
+		
+		ptron.train(training[count].inputs, training[count].answer);
+		// For animation, we are training one point at a time.
+		count = (count + 1) % training.length;
+		
+		g.drawLine(0, (int)f(0), 640, (int)f(640));
+		
+		int guess;
+		for (int i = 0; i < count; i++) {
+			guess = ptron.feedforward(training[i].inputs);
+			//[full] Show the classification—no fill for -1, black for +1.
+			g.drawOval((int) training[i].inputs[0]-4, (int) training[i].inputs[1]-4, 8, 8);
+			if (guess > 0) {g.fillOval((int) training[i].inputs[0]-4,(int) training[i].inputs[1]-4, 8, 8);}
+		}
+		
+	}
+	
+	public void oneMoreTraining() {
+		repaint();
+	}
+	
+}
