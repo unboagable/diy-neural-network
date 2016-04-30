@@ -31,7 +31,7 @@ public class PerceptronPanel extends JPanel {
 	public void setup() {
 		super.setPreferredSize(new Dimension(width, height));
 
-		ptron = new Perceptron(3);
+		ptron = new BasicPerceptron(2);
 
 		// Make 2,000 training points.
 		for (int i = 0; i < training.length; i++) {
@@ -69,7 +69,7 @@ public class PerceptronPanel extends JPanel {
 		int guess;
 		for (int i = 0; i < count; i++) {
 			guess = ptron.feedforward(training[i].inputs);
-			//[full] Show the classification—no fill for -1, black for +1.
+			//[full] Show the classificationï¿½no fill for -1, black for +1.
 			g.drawOval((int) training[i].inputs[0]-4, xyCordinateY((int) training[i].inputs[1]-4), 8, 8);
 			if (guess > 0) {g.fillOval((int) training[i].inputs[0]-4,xyCordinateY((int) training[i].inputs[1]-4), 8, 8);}
 		}
