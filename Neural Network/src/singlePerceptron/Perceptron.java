@@ -16,6 +16,4 @@ public interface Perceptron {
 	
 	public void train(double[] inputs, int desired);
 	
-	public double[] getWeights();
-	
 }

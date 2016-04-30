@@ -24,14 +24,14 @@ public class PerceptronPanel extends JPanel {
 	}
 	
 	double fPtron(double x){  //formula for a line
-		double[] pweights=ptron.getWeights();
+		double[] pweights=((LinearPerceptron) ptron).getWeights();
 		return (-1*pweights[0]/pweights[1])*x+(-1*pweights[2]/pweights[1]);
 	}
 	
 	public void setup() {
 		super.setPreferredSize(new Dimension(width, height));
 
-		ptron = new BasicPerceptron(2);
+		ptron = new LinearPerceptron(2);
 
 		// Make 2,000 training points.
 		for (int i = 0; i < training.length; i++) {
