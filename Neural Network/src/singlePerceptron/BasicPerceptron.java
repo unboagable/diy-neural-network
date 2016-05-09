@@ -18,4 +18,10 @@ abstract class BasicPerceptron implements Perceptron{
 		return randomValue;
 	}
 	
+	protected int activate(double sum) {
+		//Return a 1 if positive, -1 if negative.
+		if (sum > 0) return 1;
+		else return -1;
+	}
+	
 }

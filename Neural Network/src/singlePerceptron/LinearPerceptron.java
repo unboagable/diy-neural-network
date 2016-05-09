@@ -31,12 +31,6 @@ public class LinearPerceptron extends BasicPerceptron{
 		weights[wl-1] += c * error; //adjust bias
 	}
 	
-	private int activate(double sum) {
-		//Return a 1 if positive, -1 if negative.
-		  if (sum > 0) return 1;
-		  else return -1;
-		}
-	
 	public double[] getWeights() {
 		return weights;
 	}
