@@ -7,7 +7,7 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
-public class PerceptronPanel extends JPanel {
+public class LinearPerceptronPanel extends JPanel {
 	/**
 	 * 
 	 */

@@ -1,4 +1,4 @@
-import singlePerceptron.PerceptronSimulation;
+import singlePerceptron.LinearPerceptronSimulation;
 
 /**
  * 
@@ -14,7 +14,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		PerceptronSimulation.main(args);
+		LinearPerceptronSimulation.main(args);
 	}
 
 }

@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-public class PerceptronSimulation {
+public class LinearPerceptronSimulation {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -24,7 +24,7 @@ public class PerceptronSimulation {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create and set up the content pane.
-		final PerceptronPanel simulationPanel = new PerceptronPanel();
+		final LinearPerceptronPanel simulationPanel = new LinearPerceptronPanel();
 		simulationPanel.setup();
 		simulationPanel.setOpaque(true);
 		frame.setContentPane(simulationPanel);
