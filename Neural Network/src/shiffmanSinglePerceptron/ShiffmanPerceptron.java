@@ -1,7 +1,7 @@
 /**
  * 
  */
-package singlePerceptron;
+package shiffmanSinglePerceptron;
 
 /**
  * @author Chang-Hyun
@@ -10,7 +10,7 @@ package singlePerceptron;
 
 //http://natureofcode.com/book/chapter-10-neural-networks/
 
-public interface Perceptron {
+public interface ShiffmanPerceptron {
 	
 	public int feedforward(double[] inputs);
 	

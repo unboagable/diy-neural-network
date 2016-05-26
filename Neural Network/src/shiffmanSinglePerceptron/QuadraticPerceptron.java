@@ -1,4 +1,4 @@
-package singlePerceptron;
+package shiffmanSinglePerceptron;
 
 public class QuadraticPerceptron extends BasicPerceptron{
 	private double weights[][];

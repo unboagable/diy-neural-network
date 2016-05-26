@@ -1,4 +1,4 @@
-package singlePerceptron;
+package shiffmanSinglePerceptron;
 
 public class LinearPerceptron extends BasicPerceptron{
 	private double[] weights;

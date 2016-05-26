@@ -1,4 +1,4 @@
-package singlePerceptron;
+package shiffmanSinglePerceptron;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,7 +12,7 @@ public class LinearPerceptronPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 4674391243062016404L;
-	Perceptron ptron;
+	ShiffmanPerceptron ptron;
 	Random r = new Random();
 	Trainer[] training = new Trainer[2000];
 	int count = 0;

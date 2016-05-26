@@ -1,4 +1,4 @@
-package singlePerceptron;
+package shiffmanSinglePerceptron;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

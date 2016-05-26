@@ -1,4 +1,4 @@
-package singlePerceptron;
+package shiffmanSinglePerceptron;
 
 import java.util.Random;
 
@@ -9,7 +9,7 @@ import java.util.Random;
 
 //http://natureofcode.com/book/chapter-10-neural-networks/
 
-abstract class BasicPerceptron implements Perceptron{
+public abstract class BasicPerceptron implements ShiffmanPerceptron{
 	protected final double c = 0.01;
 
 	protected double random(double rangeMin, double rangeMax) {

@@ -1,4 +1,4 @@
-package singlePerceptron;
+package shiffmanSinglePerceptron;
 
 public class Trainer {
 	public double[] inputs; //A "Trainer" object stores the inputs and the correct answer.
