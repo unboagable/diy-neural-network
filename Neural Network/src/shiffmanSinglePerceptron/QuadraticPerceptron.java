@@ -1,5 +1,7 @@
 package shiffmanSinglePerceptron;
 
+import utilities.RandomSingleton;
+
 public class QuadraticPerceptron extends BasicPerceptron{
 	private double weights[][];
 
@@ -7,12 +9,12 @@ public class QuadraticPerceptron extends BasicPerceptron{
 		weights=new double[n+1][]; //1 more for bias (constant)
 		for (int i = 0; i < n; i++) {//The weights are picked randomly to start.
 			weights[i] = new double[2];
-			weights[i][0]=random(-1,1); //input^2 coefficient
-			weights[i][1]=random(-1,1); //input coefficient
+			weights[i][0]=RandomSingleton.random(-1,1); //input^2 coefficient
+			weights[i][1]=RandomSingleton.random(-1,1); //input coefficient
 		}
 		//last weight is the constant so doesn't need an input^2 term
 		weights[n]=new double[1];
-		weights[n][0]=random(-1,1);;
+		weights[n][0]=RandomSingleton.random(-1,1);;
 	}
 
 	public int feedforward(double[] inputs) {

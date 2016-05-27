@@ -1,12 +1,14 @@
 package shiffmanSinglePerceptron;
 
+import utilities.RandomSingleton;
+
 public class LinearPerceptron extends BasicPerceptron{
 	private double[] weights;
 	
 	public LinearPerceptron(int n) {
 		weights=new double[n+1]; //1 more for bias (constant)
 		for (int i = 0; i < weights.length; i++) {//The weights are picked randomly to start.
-			weights[i] = random(-1,1);
+			weights[i] = RandomSingleton.random(-1,1);
 		}
 	}
 	
