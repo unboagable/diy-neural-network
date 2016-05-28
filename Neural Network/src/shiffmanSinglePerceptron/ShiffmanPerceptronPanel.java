@@ -7,7 +7,7 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
-public class LinearPerceptronPanel extends JPanel {
+public class ShiffmanPerceptronPanel extends JPanel {
 	/**
 	 * 
 	 */
@@ -24,14 +24,14 @@ public class LinearPerceptronPanel extends JPanel {
 	}
 	
 	double fPtron(double x){  //formula for a line
-		double[] pweights=((LinearPerceptron) ptron).getWeights();
+		double[] pweights=ptron.getWeights();
 		return (-1*pweights[0]/pweights[1])*x+(-1*pweights[2]/pweights[1]);
 	}
 	
 	public void setup() {
 		super.setPreferredSize(new Dimension(width, height));
 
-		ptron = new LinearPerceptron(2);
+		ptron = new ShiffmanPerceptron(2);
 
 		// Make 2,000 training points.
 		for (int i = 0; i < training.length; i++) {

@@ -1,4 +1,4 @@
-import shiffmanSinglePerceptron.LinearPerceptronSimulation;
+import shiffmanSinglePerceptron.ShiffmanPerceptronSimulation;
 
 /**
  * 
@@ -14,7 +14,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		LinearPerceptronSimulation.main(args);
+		ShiffmanPerceptronSimulation.main(args);
 	}
 
 }
