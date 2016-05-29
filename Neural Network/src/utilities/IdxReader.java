@@ -7,19 +7,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 //http://stackoverflow.com/questions/17279049/reading-a-idx-file-type-in-java
 
 public class IdxReader {
+	private static JFileChooser chooser = new JFileChooser();
 
     public static void main(String[] args) {
         FileInputStream inImage = null;
         FileInputStream inLabel = null;
 
-        String inputImagePath = "CBIR_Project/imagesRaw/MNIST/train-images-idx3-ubyte";
-        String inputLabelPath = "CBIR_Project/imagesRaw/MNIST/train-labels-idx1-ubyte";
+        String inputImagePath = promptForFile(true, "choose image file");
+        String inputLabelPath = promptForFile(true,"choose label file");
 
-        String outputPath = "CBIR_Project/images/MNIST_Database_ARGB/";
+        String outputPath = promptForFile(false,"choose output folder")+"/";
+        
+        System.out.println(outputPath);
 
         int[] hashMap = new int[10]; 
 
@@ -69,7 +73,6 @@ public class IdxReader {
                 try {
                     inImage.close();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -77,11 +80,25 @@ public class IdxReader {
                 try {
                     inLabel.close();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         }
+    }
+    
+    public static String promptForFile(boolean file, String title){ 
+    	chooser.setDialogTitle(title);
+    	
+    	if (file){chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);}
+    	else{chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);}
+    	
+    	chooser.setAcceptAllFileFilterUsed(false);
+    	int returnVal=chooser.showOpenDialog(null);
+
+    	if (returnVal == JFileChooser.APPROVE_OPTION) {
+    	  return chooser.getSelectedFile().toString();
+    	}
+    	return "";
     }
 
 }

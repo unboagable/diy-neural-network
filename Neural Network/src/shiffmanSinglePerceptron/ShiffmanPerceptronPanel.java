@@ -68,7 +68,7 @@ public class ShiffmanPerceptronPanel extends JPanel {
 		
 		int guess;
 		for (int i = 0; i < count; i++) {
-			guess = ptron.feedforward(training[i].inputs);
+			guess = ptron.getResult(training[i].inputs);
 			//[full] Show the classification�no fill for -1, black for +1.
 			g.drawOval((int) training[i].inputs[0]-4, xyCordinateY((int) training[i].inputs[1]-4), 8, 8);
 			if (guess > 0) {g.fillOval((int) training[i].inputs[0]-4,xyCordinateY((int) training[i].inputs[1]-4), 8, 8);}

@@ -2,6 +2,10 @@ package neurons;
 
 public abstract class TransferFunctionNeuron extends Neuron{
 	
-	abstract double transferFunction(double sum);
+	protected abstract double transferFunction(double sum);
+	
+	public double feedforward(double[] inputs) {
+	    return transferFunction(getSum(inputs));
+	}
 
 }

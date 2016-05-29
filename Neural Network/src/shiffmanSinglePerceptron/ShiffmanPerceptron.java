@@ -23,13 +23,12 @@ public class ShiffmanPerceptron extends Neuron{
 		}
 	}
 	
-	public int feedforward(double[] inputs) {
-	    //Result is the sign of the sum, -1 or +1. Here the perceptron is making a guess. Is it on one side of the line or the other?
-	    return activate(getSum(inputs));
-	  }
+	public double feedforward(double[] inputs) {
+	    return getSum(inputs);
+	}
 	
 	public void train(double[] inputs, int desired) {
-		int guess = feedforward(inputs);
+		int guess = getResult(inputs);
 		double error = desired - guess;
 		int wl=weights.length;
 		for (int i = 0; i < wl-1; i++) {

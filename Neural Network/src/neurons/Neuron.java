@@ -18,5 +18,11 @@ public 	abstract class Neuron {
 	    sum += weights[wl-1];
 		return sum;
 	}
+	
+	public abstract double feedforward(double[] inputs);
+	
+	public int getResult(double[] inputs){
+		return activate(feedforward(inputs));
+	}
 
 }
