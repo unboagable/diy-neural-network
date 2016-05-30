@@ -2,6 +2,7 @@ package neurons;
 
 public 	abstract class Neuron {
 	protected double[] weights;
+	protected double bias;
 	
 	protected int activate(double sum) {
 		//Return a 1 if positive, -1 if negative.
@@ -12,10 +13,10 @@ public 	abstract class Neuron {
 	public double getSum(double[] inputs) {
 		double sum = 0;
 		int wl=weights.length;
-	    for (int i = 0; i < wl-1; i++) {
+	    for (int i = 0; i < wl; i++) {
 	      sum += inputs[i]*weights[i];
 	    }
-	    sum += weights[wl-1];
+	    sum += bias;
 		return sum;
 	}
 	

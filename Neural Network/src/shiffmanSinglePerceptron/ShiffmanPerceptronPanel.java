@@ -7,6 +7,8 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import utilities.RandomSingleton;
+
 public class ShiffmanPerceptronPanel extends JPanel {
 	/**
 	 * 
@@ -25,7 +27,8 @@ public class ShiffmanPerceptronPanel extends JPanel {
 	
 	double fPtron(double x){  //formula for a line
 		double[] pweights=ptron.getWeights();
-		return (-1*pweights[0]/pweights[1])*x+(-1*pweights[2]/pweights[1]);
+		double bias=ptron.getBias();
+		return (-1*pweights[0]/pweights[1])*x+(-1*bias/pweights[1]);
 	}
 	
 	public void setup() {
@@ -35,8 +38,8 @@ public class ShiffmanPerceptronPanel extends JPanel {
 
 		// Make 2,000 training points.
 		for (int i = 0; i < training.length; i++) {
-			double x = random(0,width);
-			double y = random(0,height);
+			double x = RandomSingleton.random(0,width);
+			double y = RandomSingleton.random(0,height);
 			//[full] Is the correct answer 1 or -1?
 			int answer = 1;
 			if (y < f(x)) answer = -1;
@@ -45,12 +48,6 @@ public class ShiffmanPerceptronPanel extends JPanel {
 		}
 		
 		
-	}
-
-
-	private double random(int rangeMin, int rangeMax) {
-		double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
-		return randomValue;
 	}
 
 	@Override
