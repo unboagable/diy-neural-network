@@ -7,9 +7,10 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import utilities.NeuronException;
 import utilities.RandomSingleton;
 
-public class ShiffmanPerceptronPanel extends JPanel {
+class ShiffmanPerceptronPanel extends JPanel {
 	/**
 	 * 
 	 */
@@ -42,9 +43,9 @@ public class ShiffmanPerceptronPanel extends JPanel {
 			double y = RandomSingleton.random(0,height);
 			//[full] Is the correct answer 1 or -1?
 			int answer = 1;
-			if (y < f(x)) answer = -1;
+			if (y < f(x)) answer = 0;
 			//[end]
-			training[i] = new Trainer(x, y, answer);
+			training[i] = new Trainer(x, y, answer); //to keep them less than 1
 		}
 		
 		
@@ -55,6 +56,8 @@ public class ShiffmanPerceptronPanel extends JPanel {
 		
 		super.paintComponent(g);
 		setBackground(Color.WHITE);
+		
+		try{
 		
 		ptron.train(training[count].inputs, training[count].answer);
 		// For animation, we are training one point at a time.
@@ -67,8 +70,11 @@ public class ShiffmanPerceptronPanel extends JPanel {
 		for (int i = 0; i < count; i++) {
 			guess = ptron.getResult(training[i].inputs);
 			//[full] Show the classification�no fill for -1, black for +1.
-			g.drawOval((int) training[i].inputs[0]-4, xyCordinateY((int) training[i].inputs[1]-4), 8, 8);
-			if (guess > 0) {g.fillOval((int) training[i].inputs[0]-4,xyCordinateY((int) training[i].inputs[1]-4), 8, 8);}
+			g.drawOval((int) (training[i].inputs[0]*training[i].scale)-4, xyCordinateY((int) (training[i].inputs[1]*training[i].scale)-4), 8, 8);
+			if (guess > 0) {g.fillOval((int) (training[i].inputs[0]*training[i].scale)-4,xyCordinateY((int) (training[i].inputs[1]*training[i].scale)-4), 8, 8);}
+		}
+		}catch(NeuronException e){
+			//do nothing
 		}
 		
 	}

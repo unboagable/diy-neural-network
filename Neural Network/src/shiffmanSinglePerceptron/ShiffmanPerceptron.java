@@ -3,7 +3,8 @@
  */
 package shiffmanSinglePerceptron;
 
-import neurons.Neuron;
+import neurons.BasicNeuron;
+import utilities.NeuronException;
 import utilities.RandomSingleton;
 
 /**
@@ -13,7 +14,7 @@ import utilities.RandomSingleton;
 
 //http://natureofcode.com/book/chapter-10-neural-networks/
 
-public class ShiffmanPerceptron extends Neuron{
+public class ShiffmanPerceptron extends BasicNeuron{
 	protected final double c = 0.01;
 	
 	public ShiffmanPerceptron(int n) {
@@ -24,11 +25,11 @@ public class ShiffmanPerceptron extends Neuron{
 		bias=RandomSingleton.random(-1,1);
 	}
 	
-	public double feedforward(double[] inputs) {
+	public double feedforward(double[] inputs) throws NeuronException {
 	    return getSum(inputs);
 	}
 	
-	public void train(double[] inputs, int desired) {
+	public void train(double[] inputs, int desired) throws NeuronException {
 		int guess = getResult(inputs);
 		double error = desired - guess;
 		int wl=weights.length;
