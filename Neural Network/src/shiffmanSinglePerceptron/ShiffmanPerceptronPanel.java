@@ -39,8 +39,8 @@ class ShiffmanPerceptronPanel extends JPanel {
 
 		// Make 2,000 training points.
 		for (int i = 0; i < training.length; i++) {
-			double x = RandomSingleton.random(0,width);
-			double y = RandomSingleton.random(0,height);
+			double x = RandomSingleton.randomDouble(0,width);
+			double y = RandomSingleton.randomDouble(0,height);
 			//[full] Is the correct answer 1 or -1?
 			int answer = 1;
 			if (y < f(x)) answer = 0;
