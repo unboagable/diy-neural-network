@@ -1,10 +1,15 @@
 package utilities;
 
+import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -12,7 +17,7 @@ import javax.swing.JFileChooser;
 //http://stackoverflow.com/questions/17279049/reading-a-idx-file-type-in-java
 
 public class IdxReader {
-	private static JFileChooser chooser = new JFileChooser();
+	
 
     public static void main(String[] args) {
         FileInputStream inImage = null;
@@ -31,13 +36,16 @@ public class IdxReader {
             inImage = new FileInputStream(inputImagePath);
             inLabel = new FileInputStream(inputLabelPath);
 
-            int magicNumberImages = (inImage.read() << 24) | (inImage.read() << 16) | (inImage.read() << 8) | (inImage.read());
+            @SuppressWarnings("unused")
+			int magicNumberImages = (inImage.read() << 24) | (inImage.read() << 16) | (inImage.read() << 8) | (inImage.read());
             int numberOfImages = (inImage.read() << 24) | (inImage.read() << 16) | (inImage.read() << 8) | (inImage.read());
             int numberOfRows  = (inImage.read() << 24) | (inImage.read() << 16) | (inImage.read() << 8) | (inImage.read());
             int numberOfColumns = (inImage.read() << 24) | (inImage.read() << 16) | (inImage.read() << 8) | (inImage.read());
 
-            int magicNumberLabels = (inLabel.read() << 24) | (inLabel.read() << 16) | (inLabel.read() << 8) | (inLabel.read());
-            int numberOfLabels = (inLabel.read() << 24) | (inLabel.read() << 16) | (inLabel.read() << 8) | (inLabel.read());
+            @SuppressWarnings("unused")
+			int magicNumberLabels = (inLabel.read() << 24) | (inLabel.read() << 16) | (inLabel.read() << 8) | (inLabel.read());
+            @SuppressWarnings("unused")
+			int numberOfLabels = (inLabel.read() << 24) | (inLabel.read() << 16) | (inLabel.read() << 8) | (inLabel.read());
 
             BufferedImage image = new BufferedImage(numberOfColumns, numberOfRows, BufferedImage.TYPE_INT_ARGB);
             int numberOfPixels = numberOfRows * numberOfColumns;
@@ -63,10 +71,8 @@ public class IdxReader {
             }
 
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             if (inImage != null) {
@@ -86,19 +92,43 @@ public class IdxReader {
         }
     }
     
-    public static String promptForFile(boolean file, String title){ 
-    	chooser.setDialogTitle(title);
+    public static String promptForFile(final boolean file, final String title){
     	
-    	if (file){chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);}
-    	else{chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);}
     	
-    	chooser.setAcceptAllFileFilterUsed(false);
-    	int returnVal=chooser.showOpenDialog(null);
+    	try {
+    		
+    		FutureTask<String> getPathNameTask = new FutureTask<String>(new Callable<String>() {
 
-    	if (returnVal == JFileChooser.APPROVE_OPTION) {
-    	  return chooser.getSelectedFile().toString();
-    	}
+				public String call() throws Exception {
+			    	JFileChooser chooser = new JFileChooser();
+			    	chooser.setDialogTitle(title);
+			    	
+			    	if (file){chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);}
+			    	else{chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);}
+			    	
+			    	chooser.setAcceptAllFileFilterUsed(false);
+			    	int returnVal=chooser.showOpenDialog(null);
+			    	
+			    	if (returnVal == JFileChooser.APPROVE_OPTION) {
+			      	  return chooser.getSelectedFile().toString();
+			      	}
+			      	return "";
+			    }
+			});
+    		
+			EventQueue.invokeAndWait(getPathNameTask);
+			
+			return getPathNameTask.get();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+    	
     	return "";
+    	
     }
 
 }

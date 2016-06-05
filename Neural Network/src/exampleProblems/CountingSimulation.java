@@ -1,6 +1,7 @@
 package exampleProblems;
 
 import sigmoidNeuron.Network;
+import utilities.NetworkException;
 import utilities.NeuronException;
 import utilities.RandomSingleton;
 
@@ -14,13 +15,13 @@ public class CountingSimulation {
 			int from = RandomSingleton.randomInt(0,7);
 			int to=from+1;
 			//train
-			for(int i=0; i< 1000000; i++){
+			for(int i=0; i< 10000; i++){
 				from = RandomSingleton.randomInt(0,7);
 				to=from+1;
 				n.train(intToDoubleArray(from), intToDoubleArray(to));
 			}
 			
-			for (int j=0; j<28; j++){
+			for (int j=0; j<14; j++){
 				System.out.println("--------------------");
 				from=j%7;
 				System.out.println(from);
@@ -29,7 +30,8 @@ public class CountingSimulation {
 			
 			
 		}catch (NeuronException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NetworkException e) {
 			e.printStackTrace();
 		}
 		

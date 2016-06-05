@@ -1,6 +1,7 @@
 package sigmoidNeuron;
 
 import neurons.Neuron;
+import utilities.NetworkException;
 import utilities.NeuronException;
 
 public class Network {
@@ -35,21 +36,29 @@ public class Network {
 		}
 	}
 	
-	public void train(double[] inputs, double[] desiredOutput) throws NeuronException{
+	public void train(double[] inputs, double[] desiredOutput) throws NeuronException, NetworkException{
+		
+		if (inputs == null || desiredOutput == null || inputs.length != inputSize 
+				|| desiredOutput.length != sizes[sizes.length-1]){
+			throw new NetworkException("");
+		}
 		
 		int layers=sizes.length;
 		
 		propogateForward(inputs);
 		
+		//double[] forresults=finalizeOutput(propagateResults[sizes.length-1]);
+		double[] forresults=propagateResults[sizes.length-1];
+		
 		for(int k=0; k < sizes[layers-1]; k++){  //sum ahead last layer
-			propagateResults[layers-1][k]= propagateResults[layers-1][k]-desiredOutput[k];
+			propagateResults[layers-1][k]= forresults[k]-desiredOutput[k];
 		}
 		
 		for(int m=layers-1; m > 0; m--){
 			for(int j=0; j < sizes[m-1]; j++){ //set sums ahead to 0 for layer before  
 				propagateResults[m-1][j]= 0.0;
 			}
-			for(int p=0; p < sizes[m-1]; p++){ 
+			for(int p=0; p < sizes[m]; p++){ 
 				double[] myAddition= neurons[m][p].backPropagate(propagateResults[m][p]);//to add to sums for layer before
 				for (int i=0; i < sizes[m-1]; i++){
 					propagateResults[m-1][i] += myAddition[i];
