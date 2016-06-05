@@ -41,9 +41,21 @@ public class DigitRecognizingAI {
     	n = new Network(784, layerSizes);
     	
     	String trainingLocation=IdxReader.promptForFile(false, "select folder with Training Images")+"/";
-    	for(int t=0; t<35;t++){
+    	String judgeLocation=IdxReader.promptForFile(false, "select folder with judge Images")+"/";
+    	
+    	double correctPercent=0.0;
+    	int run = 0;
+    	
+    	while(correctPercent < 0.80){
     		trainAI(trainingLocation);
+    		run++;
+    		correctPercent=judgeAI(judgeLocation);
     	}
+    	
+    	System.out.print("Reach min classification rate at run: ");
+    	System.out.println(run);
+    	System.out.print("Classification rate: ");
+    	System.out.println(correctPercent);
     	
     	for(int i=0; i<3; i++){
     		String imageLocation=IdxReader.promptForFile(true, "choose 28*28 digit image to guess");
@@ -52,16 +64,7 @@ public class DigitRecognizingAI {
 			try {
 				img = ImageIO.read(im);
 				double[] guess=n.getOutput(GreyscaleImageProcessor.getInput(img));
-				int guessDigit=-1;
-				for(int j=0;j<10;j++){
-					if (guess[j] == 1.0){
-						if (guessDigit != -1){
-							guessDigit = -2;
-							break;
-						}
-						guessDigit = j;
-					}
-				}
+				int guessDigit=networkOuputToResult(guess);
 				if (guessDigit > 0){
 					System.out.print("Network guess: ");
 					System.out.println(guessDigit);
@@ -102,10 +105,62 @@ public class DigitRecognizingAI {
 		}
 	}
 	
+	static double judgeAI(String judgeLocation){
+		
+		int correct=0;
+		int judged=0;
+		
+		File dir= new File(judgeLocation);
+		
+		if (n == null){return 2.0;}
+
+		if (dir.isDirectory()) { // make sure it's a directory
+			for (final File f : dir.listFiles(IMAGE_FILTER)) {
+				BufferedImage img = null;
+		         
+				try {
+					img = ImageIO.read(f);
+					int b = Character.getNumericValue((f.getName()).charAt(0));
+					
+					double[] guess=n.getOutput(GreyscaleImageProcessor.getInput(img));
+					int guessDigit=networkOuputToResult(guess);
+					
+					judged++;
+					if (guessDigit == b){correct++;}
+					
+				} catch (final IOException e) {
+					e.printStackTrace();
+				} catch (NeuronException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		double classificationRate=((double) correct)/((double) judged);
+		
+		System.out.println(classificationRate);
+		
+		return classificationRate;
+	}
+	
 	static double[] toNetworkOuput(int x){
 		double[] no=new double[10];
 		no[x]=1.0;
 		return no;
+	}
+	
+	static int networkOuputToResult(double[] guess){
+		int guessDigit=-1;
+		for(int j=0;j<10;j++){
+			if (guess[j] == 1.0){
+				if (guessDigit != -1){
+					guessDigit = -2;
+					break;
+				}
+				guessDigit = j;
+			}
+		}
+		return guessDigit;
 	}
 
 }
