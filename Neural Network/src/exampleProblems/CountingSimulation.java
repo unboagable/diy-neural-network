@@ -11,19 +11,27 @@ public class CountingSimulation {
 		
 		int totalRuns=0;
 		int trails=10;
+		int uc=0;
+		int c=0;
 		for(int i=0; i<trails; i++){
-			totalRuns+=oneRun();
+			try {
+				totalRuns+=oneRun();
+				c++;
+			} catch (NetworkException e) {
+				uc++;
+			}
 		}
 		
-		System.out.print("Average over ");
-    	System.out.println(trails);
-    	System.out.print(" trails:");
-    	
-    	System.out.println(totalRuns/trails);
+		System.out.print("Average runs over ");
+    	System.out.print(c);
+    	System.out.print(" successful trails:");
+    	System.out.println(totalRuns/c);
+    	System.out.print("Trails that didn't converge: ");
+    	System.out.println(uc);
 		
 	}
 	
-	private static int oneRun(){
+	private static int oneRun() throws NetworkException{
 		int[] sizes={3, 3};
 		n=new Network(3, sizes);
 		
@@ -35,6 +43,11 @@ public class CountingSimulation {
     		trainAI();
     		run++;
     		correctPercent=judgeAI();
+    		
+    		if (run >= 1000000){
+    			throw new NetworkException("Didn't Converge");
+    		}
+    		
     	}
     	
     	System.out.print("Reach min classification rate at run: ");

@@ -47,8 +47,8 @@ public class Network {
 		
 		propogateForward(inputs);
 		
-		double[] forresults=finalizeOutput(propagateResults[sizes.length-1]);
-		//double[] forresults=propagateResults[sizes.length-1];
+		double[] forresults=finalizeOutput(propagateResults[sizes.length-1]); //converges better
+		//double[] forresults=propagateResults[sizes.length-1]; 
 		
 		for(int k=0; k < sizes[layers-1]; k++){  //sum ahead last layer
 			propagateResults[layers-1][k]= forresults[k]-desiredOutput[k];
