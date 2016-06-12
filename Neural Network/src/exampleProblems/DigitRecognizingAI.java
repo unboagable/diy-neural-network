@@ -12,6 +12,7 @@ import sigmoidNeuron.Network;
 import utilities.IdxReader;
 import utilities.NetworkException;
 import utilities.NeuronException;
+import utilities.RandomSingleton;
 
 
 //http://stackoverflow.com/questions/11300847/load-and-display-all-the-images-from-a-folder
@@ -46,10 +47,14 @@ public class DigitRecognizingAI {
     	double correctPercent=0.0;
     	int run = 0;
     	
-    	while(correctPercent < 0.80){
+    	while(correctPercent < 0.75){
     		trainAI(trainingLocation);
     		run++;
     		correctPercent=judgeAI(judgeLocation);
+    		if (run % 100 == 0){
+    			System.out.println(run);
+    			System.out.println(correctPercent);
+    		}
     	}
     	
     	System.out.print("Reach min classification rate at run: ");
@@ -87,7 +92,12 @@ public class DigitRecognizingAI {
 		if (n == null){return;}
 
 		if (dir.isDirectory()) { // make sure it's a directory
-			for (final File f : dir.listFiles(IMAGE_FILTER)) {
+			
+			File[] files=dir.listFiles(IMAGE_FILTER);
+			int fl=files.length;
+			
+			for (int i=0; i<fl; i++) {
+				final File f=files[RandomSingleton.randomInt(0, fl-1)];
 				BufferedImage img = null;
 		         
 				try {
@@ -137,8 +147,6 @@ public class DigitRecognizingAI {
 		}
 		
 		double classificationRate=((double) correct)/((double) judged);
-		
-		System.out.println(classificationRate);
 		
 		return classificationRate;
 	}

@@ -6,7 +6,7 @@ import utilities.RandomSingleton;
 public 	abstract class BasicNeuron {
 	protected double[] weights;
 	protected double bias;
-	protected final double c = 0.01;  //eta
+	protected final double c = 0.001;  //eta
 	private double[] lastInputs;
 	private double lastFeedForward;
 	
