@@ -6,10 +6,10 @@ class Trainer {
 	public double scale;
 	 
 	public Trainer(double x, double y, int a) {
-		scale = x;
+		scale = Math.max(x, y);
 		inputs = new double[2];
-		inputs[0] = x/x;
-		inputs[1] = y/x;
+		inputs[0] = x/scale;
+		inputs[1] = y/scale;
 		answer = a;
 	}
 }

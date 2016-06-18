@@ -75,6 +75,7 @@ class ShiffmanPerceptronPanel extends JPanel {
 		}
 		}catch(NeuronException e){
 			//do nothing
+			System.out.println(e.getMessage());
 		}
 		
 	}
