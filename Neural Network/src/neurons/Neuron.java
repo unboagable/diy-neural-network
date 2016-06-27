@@ -9,5 +9,9 @@ public interface Neuron {
 	public int getResult(double[] inputs) throws NeuronException;
 	
 	public double[] backPropagate(double sumAhead);
+	
+	public void setWeights(double[] newWeights);
+	
+	public void setBias(double newBias);
 
 }

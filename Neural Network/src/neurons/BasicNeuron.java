@@ -19,6 +19,19 @@ public 	abstract class BasicNeuron {
 		bias=RandomSingleton.randomDouble(-1,1);
 	}
 	
+	public void setWeights(double[] newWeights){
+		//TODO: Input check
+		for (int i = 0; i < weights.length; i++) {//The weights are picked randomly to start.
+			weights[i] = newWeights[i];
+		}
+		bias=RandomSingleton.randomDouble(-1,1);
+	}
+	
+	public void setBias(double newBias){
+		//TODO: Input check
+		bias=newBias;
+	}
+	
 	protected int activate(double sum) {
 		//Return a 1 if positive, -1 if negative.
 		if (sum > 0) return 1;

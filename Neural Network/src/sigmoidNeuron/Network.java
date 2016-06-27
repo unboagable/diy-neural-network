@@ -100,4 +100,12 @@ public class Network {
 		return ds;
 	}
 
+	public int getInputSize() {
+		return inputSize;
+	}
+
+	public int[] getSizes() {
+		return sizes;
+	}
+
 }

@@ -3,6 +3,7 @@ package exampleProblems;
 import sigmoidNeuron.Network;
 import utilities.NetworkException;
 import utilities.NeuronException;
+import utilities.XmlTool;
 
 public class CountingSimulation {
 	static Network n;
@@ -10,7 +11,7 @@ public class CountingSimulation {
 	public static void main(String[] args) {
 		
 		int totalRuns=0;
-		int trails=10;
+		int trails=3;
 		int uc=0;
 		int c=0;
 		for(int i=0; i<trails; i++){
@@ -28,6 +29,13 @@ public class CountingSimulation {
     	System.out.println(totalRuns/c);
     	System.out.print("Trails that didn't converge: ");
     	System.out.println(uc);
+    	
+    	XmlTool.saveNetworkToXML(n);
+    	try {
+			n=XmlTool.readXML();
+		} catch (NetworkException e) {
+			System.out.println(e.getMessage());
+		}
 		
 	}
 	
