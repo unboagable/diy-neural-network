@@ -15,6 +15,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -27,22 +28,27 @@ public class XmlTool {
 	
 	public static void main(String[] args) {
 		Network n;
-  
+		String xml = IdxReader.promptForFile(true, "choose xml file");
     	try {
-			n=XmlTool.readXML();
-			XmlTool.saveNetworkToXML(n);
+			n=XmlTool.readXML(xml);
+			XmlTool.saveNetworkToXML(n,xml);
 		} catch (NetworkException e) {
 			System.out.println(e.getMessage());
 		}
 		
 	}
+	
+	public static Network readXML() throws NetworkException{
+		
+		String xml = IdxReader.promptForFile(true, "choose xml file");
+		return readXML(xml);
+	}
 
-	public static Network readXML() throws NetworkException {
+	public static Network readXML(String xml) throws NetworkException {
 		Network n;
 		int[] sizes;
 		int input_size;
 		
-		String xml = IdxReader.promptForFile(true, "choose xml file");
 		
         Document dom;
         // Make an  instance of the DocumentBuilderFactory
@@ -55,21 +61,30 @@ public class XmlTool {
             // parse using the builder to get the DOM mapping of the    
             // XML file
             dom = db.parse(xml);
-
+            dom.getDocumentElement().normalize();
             Element network = dom.getDocumentElement();
             
             if (network.getTagName() == "network" && network.hasChildNodes()) {
             	
-            	NodeList networknl = network.getChildNodes();
-            	Element networksettings=(Element) networknl.item(1);
-            	//Element networkvalues=(Element) networknl.item(2);
+            	NodeList networkvnl = network.getElementsByTagName("network_values");
             	
-            	System.out.println(networksettings.getTagName());
-            	//System.out.println(networkvalues.getTagName());
+            	NodeList networksnl = network.getElementsByTagName("network_settings");
+            	Node networksettings=networksnl.item(0);
+            	Node networkvalues=networkvnl.item(0);
             	
-            	if (networksettings.getTagName() != "network_settings"){
-            		throw new NetworkException("Couldn't load network: bad xml format - no network by name");
+            	if (networksettings.getNodeName() != "network_settings" || 
+            			networkvalues.getNodeName() != "network_values"){
+            		throw new NetworkException("Couldn't load network: bad xml format - no network settings/values");
             	}
+            	
+            	if (networksettings.getNodeType() == Node.ELEMENT_NODE) {
+
+        			Element nse = (Element) networksettings;
+
+        			System.out.println("Input Size : " + nse.getElementsByTagName("input_size").item(0).getTextContent());
+        			System.out.println("Sizes Length : " + nse.getElementsByTagName("sizes_length").item(0).getTextContent());
+        		}
+            	
             }else{
             	throw new NetworkException("Couldn't load network: bad xml format - no network or no network children");
             }
@@ -94,10 +109,12 @@ public class XmlTool {
         throw new NetworkException("Couldn't load network: End");
     }
 	
-	public static void saveNetworkToXML(Network n) {
-		
+	public static void saveNetworkToXML(Network n){
 		String xml = IdxReader.promptForFile(true, "choose xml file");
-		
+		saveNetworkToXML(n, xml);
+	}
+	
+	public static void saveNetworkToXML(Network n, String xml) {
 		Document dom;
 	    Element e = null;
 	    Element s = null;
