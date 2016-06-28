@@ -16,7 +16,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import sigmoidNeuron.Network;
@@ -64,39 +63,47 @@ public class XmlTool {
             dom.getDocumentElement().normalize();
             Element network = dom.getDocumentElement();
             
-            if (network.getTagName() == "network" && network.hasChildNodes()) {
-            	
-            	NodeList networkvnl = network.getElementsByTagName("network_values");
-            	
-            	NodeList networksnl = network.getElementsByTagName("network_settings");
-            	Node networksettings=networksnl.item(0);
-            	Node networkvalues=networkvnl.item(0);
-            	
-            	if (networksettings.getNodeName() != "network_settings" || 
-            			networkvalues.getNodeName() != "network_values"){
-            		throw new NetworkException("Couldn't load network: bad xml format - no network settings/values");
-            	}
-            	
-            	if (networksettings.getNodeType() == Node.ELEMENT_NODE) {
-
-        			Element nse = (Element) networksettings;
-
-        			System.out.println("Input Size : " + nse.getElementsByTagName("input_size").item(0).getTextContent());
-        			System.out.println("Sizes Length : " + nse.getElementsByTagName("sizes_length").item(0).getTextContent());
-        		}
-            	
-            }else{
+            if (network.getTagName() != "network" || !network.hasChildNodes()) {
             	throw new NetworkException("Couldn't load network: bad xml format - no network or no network children");
             }
             
-            sizes=new int[2];
-            sizes[0]=3;
-            sizes[1]=3;
-            input_size=3;
+            	
+            Node networkSettingsN = network.getElementsByTagName("network_values").item(0);
+            Node networkValuesN = network.getElementsByTagName("network_settings").item(0);
+        	
+        	if (networkSettingsN.getNodeName() != "network_settings" || 
+        			networkSettingsN.getNodeType() != Node.ELEMENT_NODE){
+        		throw new NetworkException("Couldn't load network: bad xml format - no network settings/ not element");
+        	}
+
+        	Element networkSettingsE = (Element) networkSettingsN;
+
+			input_size=Integer.valueOf(networkSettingsE.getElementsByTagName("input_size").item(0).getTextContent());
+			int sizel=Integer.valueOf(networkSettingsE.getElementsByTagName("sizes_length").item(0).getTextContent());
+			
+			sizes=new int[sizel];
+			
+			Node sizesN=(networkSettingsE.getElementsByTagName("sizes").item(0));
+			
+			if (sizesN.getNodeType() != Node.ELEMENT_NODE) {
+        		throw new NetworkException("Couldn't load network: bad xml format - sizes not element");
+        	}
+			
+			Element sizesE=(Element) sizesN;
+			
+			for(int i=0;i<sizel; i++){
+				sizes[i]=Integer.valueOf(sizesE.getElementsByTagName("size"+String.valueOf(i)).item(0).getTextContent());
+			}
             
             n=new Network(input_size,sizes);
+            
+            if (networkValuesN.getNodeName() != "network_values" || 
+        			networkValuesN.getNodeType() != Node.ELEMENT_NODE){
+        		return n;
+        	}
 
             return n;
+            
 
         } catch (ParserConfigurationException pce) {
             System.out.println(pce.getMessage());
