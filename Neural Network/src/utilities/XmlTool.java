@@ -44,7 +44,7 @@ public class XmlTool {
 	}
 
 	public static Network readXML(String xml) throws NetworkException {
-		Network n;
+		Network network;
 		int[] sizes;
 		int input_size;
 		
@@ -61,17 +61,17 @@ public class XmlTool {
             // XML file
             dom = db.parse(xml);
             dom.getDocumentElement().normalize();
-            Element network = dom.getDocumentElement();
+            Element networkE = dom.getDocumentElement();
             
-            if (network.getTagName() != "network" || !network.hasChildNodes()) {
+            if (networkE.getTagName() != "network" || !networkE.hasChildNodes()) {
             	throw new NetworkException("Couldn't load network: bad xml format - no network or no network children");
             }
             
             	
-            Node networkSettingsN = network.getElementsByTagName("network_settings").item(0);
-            Node networkValuesN = network.getElementsByTagName("network_values").item(0);
+            Node networkSettingsN = networkE.getElementsByTagName("network_settings").item(0);
+            Node networkValuesN = networkE.getElementsByTagName("network_values").item(0);
         	
-        	if (networkSettingsN.getNodeName() != "network_settings" || 
+        	if (networkSettingsN == null || 
         			networkSettingsN.getNodeType() != Node.ELEMENT_NODE){
         		throw new NetworkException("Couldn't load network: bad xml format - no network settings/ not element");
         	}
@@ -95,14 +95,81 @@ public class XmlTool {
 				sizes[i]=Integer.valueOf(sizesE.getElementsByTagName("size"+String.valueOf(i)).item(0).getTextContent());
 			}
             
-            n=new Network(input_size,sizes);
+            network=new Network(input_size,sizes);
             
-            if (networkValuesN.getNodeName() != "network_values" || 
+            if (networkValuesN == null || 
         			networkValuesN.getNodeType() != Node.ELEMENT_NODE){
-        		return n;
+        		return network;
         	}
+            
+            Element networkValuesE = (Element) networkValuesN;
+            
+            Node layerN;
+            Element layerE;
+            
+            Node neuronN;
+            Element neuronE;
+            
+            double[] weights;
+            
+            //first layer
+            
+            layerN=(networkValuesE.getElementsByTagName("layer0").item(0));
+            
+            if (layerN == null || 
+        			layerN.getNodeType() != Node.ELEMENT_NODE){
+        		return network;
+        	}
+            
+            layerE = (Element) layerN;
+            
+            for(int n = 0; n<sizes[0]; n++){
+            	neuronN=layerE.getElementsByTagName("neuron"+String.valueOf(n)).item(0);
+            	if (neuronN == null || 
+            			neuronN.getNodeType() != Node.ELEMENT_NODE){
+            		return network;
+            	}
+            	neuronE=(Element) neuronN;
+            	
+            	weights=new double[input_size];
+            	for(int w=0; w<input_size;w++){
+            		weights[w]=Double.valueOf(neuronE.getElementsByTagName("weight"+String.valueOf(w)).item(0).getTextContent());
+            	}
+            	
+            	network.setNeuronWeights(0, n, weights);
+            	network.setNeuronBias(0, n, Double.valueOf(neuronE.getElementsByTagName("bias").item(0).getTextContent()));
+            }
+            
+            //other layers
+            for(int l =1; l< sizes.length; l++){
+                layerN=(networkValuesE.getElementsByTagName("layer"+String.valueOf(l)).item(0));
+                
+                if (layerN == null || 
+            			layerN.getNodeType() != Node.ELEMENT_NODE){
+            		return network;
+            	}
+                
+                layerE = (Element) layerN;
+                
+                for(int n = 0; n<sizes[l]; n++){
+                	neuronN=layerE.getElementsByTagName("neuron"+String.valueOf(n)).item(0);
+                	if (neuronN == null || 
+                			neuronN.getNodeType() != Node.ELEMENT_NODE){
+                		return network;
+                	}
+                	neuronE=(Element) neuronN;
+                	
+                	weights=new double[sizes[l-1]];
+                	for(int w=0; w<sizes[l-1];w++){
+                		weights[w]=Double.valueOf(neuronE.getElementsByTagName("weight"+String.valueOf(w)).item(0).getTextContent());
+                	}
+                	
+                	network.setNeuronWeights(l, n, weights);
+                	network.setNeuronBias(l, n, Double.valueOf(neuronE.getElementsByTagName("bias").item(0).getTextContent()));
+                }
+            }
 
-            return n;
+            return network;
             
 
         } catch (ParserConfigurationException pce) {
