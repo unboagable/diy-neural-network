@@ -107,5 +107,21 @@ public class Network {
 	public int[] getSizes() {
 		return sizes;
 	}
+	
+	public double[] getNeuronWeights(int layer, int neuron){
+		return neurons[layer][neuron].getWeights();
+	}
+	
+	public void setNeuronWeights(int layer, int neuron, double[] weights){
+		neurons[layer][neuron].setWeights(weights);;
+	}
+	
+	public double getNeuronBias(int layer, int neuron){
+		return neurons[layer][neuron].getBias();
+	}
+	
+	public void setNeuronBias(int layer, int neuron, double bias){
+		neurons[layer][neuron].setBias(bias);;
+	}
 
 }

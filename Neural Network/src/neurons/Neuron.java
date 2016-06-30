@@ -13,5 +13,9 @@ public interface Neuron {
 	public void setWeights(double[] newWeights);
 	
 	public void setBias(double newBias);
+	
+	public double[] getWeights();
+	
+	public double getBias();
 
 }

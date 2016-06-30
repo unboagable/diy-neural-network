@@ -24,12 +24,18 @@ public 	abstract class BasicNeuron {
 		for (int i = 0; i < weights.length; i++) {//The weights are picked randomly to start.
 			weights[i] = newWeights[i];
 		}
-		bias=RandomSingleton.randomDouble(-1,1);
+	}
+	
+	public double[] getWeights(){
+		return weights;
 	}
 	
 	public void setBias(double newBias){
-		//TODO: Input check
 		bias=newBias;
+	}
+	
+	public double getBias(){
+		return bias;
 	}
 	
 	protected int activate(double sum) {

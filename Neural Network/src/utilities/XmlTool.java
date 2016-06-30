@@ -68,8 +68,8 @@ public class XmlTool {
             }
             
             	
-            Node networkSettingsN = network.getElementsByTagName("network_values").item(0);
-            Node networkValuesN = network.getElementsByTagName("network_settings").item(0);
+            Node networkSettingsN = network.getElementsByTagName("network_settings").item(0);
+            Node networkValuesN = network.getElementsByTagName("network_values").item(0);
         	
         	if (networkSettingsN.getNodeName() != "network_settings" || 
         			networkSettingsN.getNodeType() != Node.ELEMENT_NODE){
@@ -121,10 +121,13 @@ public class XmlTool {
 		saveNetworkToXML(n, xml);
 	}
 	
-	public static void saveNetworkToXML(Network n, String xml) {
+	public static void saveNetworkToXML(Network network, String xml) {
 		Document dom;
 	    Element e = null;
 	    Element s = null;
+	    
+	    Element e1 = null;
+	    Element s1 = null;
 
 	    // instance of a DocumentBuilderFactory
 	    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -136,19 +139,20 @@ public class XmlTool {
 	        dom = db.newDocument();
 
 	        // create the root element
-	        Element network = dom.createElement("network");
+	        Element networkE = dom.createElement("network");
 	        
 	        
 	        Element netSet = dom.createElement("network_settings");
 	        Element netVal = dom.createElement("network_values");
 
-	        // create data elements and place them under root
+	        // create network settings individual elements and place them
 	        e = dom.createElement("input_size");
-	        e.appendChild(dom.createTextNode(String.valueOf(n.getInputSize())));
+	        e.appendChild(dom.createTextNode(String.valueOf(network.getInputSize())));
 	        netSet.appendChild(e);
 	        
-	        int[] sizes = n.getSizes();
+	        int[] sizes = network.getSizes();
 	        int sizel=sizes.length;
+	        int input_size=network.getInputSize();
 
 	        e = dom.createElement("sizes_length");
 	        e.appendChild(dom.createTextNode(String.valueOf(sizel)));
@@ -162,10 +166,63 @@ public class XmlTool {
 	        }
 	        netSet.appendChild(e);
 	        
-	        network.appendChild(netSet);
-	        network.appendChild(netVal);
+	        
+	     // create network values - layers-neurons-weights/bias
+	        e = dom.createElement("layer0");
+	        
+	        double[] weights;
+	        
+	        //save weights and biases for first layer
+	        for(int n =0; n< sizes[0]; n++){ //for each neuron
+	        	e1 = dom.createElement("neuron"+String.valueOf(n));
+	        	weights=network.getNeuronWeights(0, n);
+	        	
+	        	//append weights to neuron
+	        	for (int w=0; w<input_size; w++){
+	        		s1 = dom.createElement("weight"+String.valueOf(w));
+		        	s1.appendChild(dom.createTextNode(String.valueOf(weights[w])));
+		        	e1.appendChild(s1);
+	        	}
+	        	//append bias to neuron
+	        	s1 = dom.createElement("bias");
+	        	s1.appendChild(dom.createTextNode(String.valueOf(network.getNeuronBias(0, n))));
+	        	e1.appendChild(s1);
+	        	
+	        	e.appendChild(e1);
+	        }
+	        
+	        netVal.appendChild(e);
+	        
+	      //save weights and biases for other layers
+	        for(int l=1; l <sizel; l++){
+	        
+		        e = dom.createElement("layer"+String.valueOf(l));
+		        
+		        for(int n =0; n< sizes[l]; n++){ //for each neuron
+		        	e1 = dom.createElement("neuron"+String.valueOf(n));
+		        	weights=network.getNeuronWeights(l, n);
+		        	
+		        	//append weights to neuron
+		        	for (int w=0; w<sizes[l-1]; w++){
+		        		s1 = dom.createElement("weight"+String.valueOf(w));
+			        	s1.appendChild(dom.createTextNode(String.valueOf(weights[w])));
+			        	e1.appendChild(s1);
+		        	}
+		        	//append bias to neuron
+		        	s1 = dom.createElement("bias");
+		        	s1.appendChild(dom.createTextNode(String.valueOf(network.getNeuronBias(l, n))));
+		        	e1.appendChild(s1);
+		        	
+		        	e.appendChild(e1);
+		        }
+		        
+		        netVal.appendChild(e);
+	        }
+	        
+	        networkE.appendChild(netSet);
+	        networkE.appendChild(netVal);
 
-	        dom.appendChild(network);
+	        dom.appendChild(networkE);
 
 	        try {
 	            Transformer tr = TransformerFactory.newInstance().newTransformer();
