@@ -39,13 +39,19 @@ public class DigitRecognizingAI {
     };
     
     public static void main(String[] args) {
-    	int[] layerSizes={15,10};
-    	n = new Network(784, layerSizes);
+    	
     	
     	String trainingLocation=IdxReader.promptForFile(false, "select folder with Training Images")+"/";
     	String judgeLocation=IdxReader.promptForFile(false, "select folder with judge Images")+"/";
     	
     	String xml = IdxReader.promptForFile(true, "choose xml file");
+    	
+    	try {
+			n = XmlTool.readXML(xml);
+		} catch (NetworkException e1) {
+			int[] layerSizes={15,10};
+	    	n = new Network(784, layerSizes);
+		}
     	
     	double correctPercent=0.0;
     	int run = 0;
@@ -57,7 +63,8 @@ public class DigitRecognizingAI {
     		if (run % 250 == 0){
     			System.out.println(run);
     			System.out.println(correctPercent);
-    			XmlTool.saveNetworkToXML(n, xml); 
+    			XmlTool.saveNetworkToXML(n, xml);
+    			System.out.println("done saving");
     		}
     	}
     	

@@ -37,12 +37,25 @@ public class XmlTool {
 		
 	}
 	
+	/**
+	* This method is used to read Neural network
+	* parameters and create a Network from them
+	* including network structure and neuron weights and biases
+	* @return Network This returns network from XML parameters if valid
+	*/
 	public static Network readXML() throws NetworkException{
 		
 		String xml = IdxReader.promptForFile(true, "choose xml file");
 		return readXML(xml);
 	}
-
+	
+	/**
+	* This method is used to read Neural network
+	* parameters and create a Network from them
+	* including network structure and neuron weights and biases
+	* @param xml full path to XML file with neural network parameters
+	* @return Network This returns network from XML parameters if valid
+	*/
 	public static Network readXML(String xml) throws NetworkException {
 		Network network;
 		int[] sizes;
