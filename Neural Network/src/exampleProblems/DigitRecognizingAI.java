@@ -13,6 +13,7 @@ import utilities.IdxReader;
 import utilities.NetworkException;
 import utilities.NeuronException;
 import utilities.RandomSingleton;
+import utilities.XmlTool;
 
 
 //http://stackoverflow.com/questions/11300847/load-and-display-all-the-images-from-a-folder
@@ -44,6 +45,8 @@ public class DigitRecognizingAI {
     	String trainingLocation=IdxReader.promptForFile(false, "select folder with Training Images")+"/";
     	String judgeLocation=IdxReader.promptForFile(false, "select folder with judge Images")+"/";
     	
+    	String xml = IdxReader.promptForFile(true, "choose xml file");
+    	
     	double correctPercent=0.0;
     	int run = 0;
     	
@@ -51,9 +54,10 @@ public class DigitRecognizingAI {
     		trainAI(trainingLocation);
     		run++;
     		correctPercent=judgeAI(judgeLocation);
-    		if (run % 100 == 0){
+    		if (run % 250 == 0){
     			System.out.println(run);
     			System.out.println(correctPercent);
+    			XmlTool.saveNetworkToXML(n, xml); 
     		}
     	}
     	
