@@ -41,6 +41,7 @@ public class XmlTool {
 	* This method is used to read Neural network
 	* parameters and create a Network from them
 	* including network structure and neuron weights and biases
+	* prompts user for XML file
 	* @return Network This returns network from XML parameters if valid
 	*/
 	public static Network readXML() throws NetworkException{
@@ -196,11 +197,22 @@ public class XmlTool {
         throw new NetworkException("Couldn't load network: End");
     }
 	
-	public static void saveNetworkToXML(Network n){
+	/**
+	* This method is used to write Neural network specifications
+	* and weights to an XML file
+	* @param network network to save
+	*/
+	public static void saveNetworkToXML(Network network){
 		String xml = IdxReader.promptForFile(true, "choose xml file");
-		saveNetworkToXML(n, xml);
+		saveNetworkToXML(network, xml);
 	}
 	
+	/**
+	* This method is used to write Neural network specifications
+	* and weights to an XML file
+	* @param network network to save
+	* @param xml full path to XML file to save network parameters and weights
+	*/
 	public static void saveNetworkToXML(Network network, String xml) {
 		Document dom;
 	    Element e = null;
