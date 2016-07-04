@@ -61,6 +61,7 @@ public class XmlTool {
 		Network network;
 		int[] sizes;
 		int input_size;
+		int trainingruns=0;
 		
 		
         Document dom;
@@ -91,7 +92,8 @@ public class XmlTool {
         	}
 
         	Element networkSettingsE = (Element) networkSettingsN;
-
+        	
+        	trainingruns=Integer.valueOf(networkSettingsE.getElementsByTagName("training_runs").item(0).getTextContent());
 			input_size=Integer.valueOf(networkSettingsE.getElementsByTagName("input_size").item(0).getTextContent());
 			int sizel=Integer.valueOf(networkSettingsE.getElementsByTagName("sizes_length").item(0).getTextContent());
 			
@@ -182,7 +184,7 @@ public class XmlTool {
                 	network.setNeuronBias(l, n, Double.valueOf(neuronE.getElementsByTagName("bias").item(0).getTextContent()));
                 }
             }
-
+            network.setTrainingPoints(trainingruns);
             return network;
             
 
@@ -204,7 +206,7 @@ public class XmlTool {
 	*/
 	public static void saveNetworkToXML(Network network){
 		String xml = IdxReader.promptForFile(true, "choose xml file");
-		saveNetworkToXML(network, xml);
+		saveNetworkToXML(network,xml);
 	}
 	
 	/**
@@ -238,6 +240,11 @@ public class XmlTool {
 	        Element netVal = dom.createElement("network_values");
 
 	        // create network settings individual elements and place them
+	        
+	        e = dom.createElement("training_runs");
+	        e.appendChild(dom.createTextNode(String.valueOf(network.getTrainingPoints())));
+	        netSet.appendChild(e);
+	        
 	        e = dom.createElement("input_size");
 	        e.appendChild(dom.createTextNode(String.valueOf(network.getInputSize())));
 	        netSet.appendChild(e);

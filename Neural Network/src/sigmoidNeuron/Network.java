@@ -5,6 +5,7 @@ import utilities.NetworkException;
 import utilities.NeuronException;
 
 public class Network {
+	private int trainingpoints;
 	private int[] sizes;
 	private int inputSize;
 	double[][] propagateResults;
@@ -12,6 +13,7 @@ public class Network {
 	
 	//input, hidden+output layers
 	public Network(int inputS, int[] lsizes){
+		trainingpoints=0;
 		inputSize=inputS;
 		sizes=lsizes;
 		
@@ -70,6 +72,8 @@ public class Network {
 			neurons[0][k].backPropagate(propagateResults[0][k]);
 		}
 		
+		trainingpoints++;
+		
 	}
 	
 	private void propogateForward(double[] inputs) throws NeuronException{
@@ -122,6 +126,14 @@ public class Network {
 	
 	public void setNeuronBias(int layer, int neuron, double bias){
 		neurons[layer][neuron].setBias(bias);;
+	}
+
+	public int getTrainingPoints() {
+		return trainingpoints;
+	}
+
+	public void setTrainingPoints(int trainingruns) {
+		this.trainingpoints = trainingruns;
 	}
 
 }

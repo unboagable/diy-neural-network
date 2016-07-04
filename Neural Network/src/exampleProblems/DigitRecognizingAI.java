@@ -51,6 +51,7 @@ public class DigitRecognizingAI {
 		} catch (NetworkException e1) {
 			int[] layerSizes={15,10};
 	    	n = new Network(784, layerSizes);
+	    	System.out.println("New network");
 		}
     	
     	double correctPercent=0.0;
@@ -60,10 +61,10 @@ public class DigitRecognizingAI {
     		trainAI(trainingLocation);
     		run++;
     		correctPercent=judgeAI(judgeLocation);
-    		if (run % 250 == 0){
+    		if (run % 50 == 0){
     			System.out.println(run);
     			System.out.println(correctPercent);
-    			XmlTool.saveNetworkToXML(n, xml);
+    			XmlTool.saveNetworkToXML(n,xml);
     			System.out.println("done saving");
     		}
     	}

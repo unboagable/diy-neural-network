@@ -1,6 +1,7 @@
 package exampleProblems;
 
 import sigmoidNeuron.Network;
+import utilities.IdxReader;
 import utilities.NetworkException;
 import utilities.NeuronException;
 import utilities.XmlTool;
@@ -9,6 +10,14 @@ public class CountingSimulation {
 	static Network n;
 	
 	public static void main(String[] args) {
+		
+		String xml = IdxReader.promptForFile(true, "choose xml file");
+		
+    	try {
+			n=XmlTool.readXML(xml);
+		} catch (NetworkException e) {
+			System.out.println(e.getMessage());
+		}
 		
 		int totalRuns=0;
 		int trails=3;
@@ -30,12 +39,7 @@ public class CountingSimulation {
     	System.out.print("Trails that didn't converge: ");
     	System.out.println(uc);
     	
-    	XmlTool.saveNetworkToXML(n);
-    	try {
-			n=XmlTool.readXML();
-		} catch (NetworkException e) {
-			System.out.println(e.getMessage());
-		}
+    	XmlTool.saveNetworkToXML(n, xml);
 		
 	}
 	
