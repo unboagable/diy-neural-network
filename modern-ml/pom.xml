@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.changhyun.diy</groupId>
+    <artifactId>modern-ml</artifactId>
+    <version>0.1.0</version>
+    <name>modern-ml</name>
+    <description>Modern ML example using Deeplearning4J</description>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <dl4j.version>1.0.0-M2.1</dl4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
+    </properties>
+
+    <dependencies>
+        <!-- Deeplearning4J core -->
+        <dependency>
+            <groupId>org.deeplearning4j</groupId>
+            <artifactId>deeplearning4j-core</artifactId>
+            <version>${dl4j.version}</version>
+        </dependency>
+
+        <!-- ND4J with native backend (CPU) -->
+        <dependency>
+            <groupId>org.nd4j</groupId>
+            <artifactId>nd4j-native-platform</artifactId>
+            <version>${dl4j.version}</version>
+        </dependency>
+
+        <!-- Simple SLF4J binding for logging to stdout -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>11</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <mainClass>org.example.Deeplearning4JPerceptron</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
+
