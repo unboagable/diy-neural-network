@@ -1,0 +1,46 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs/Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.class
+.venv/
+venv/
+env/
+.tox/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+.eggs/
+*.egg-info/
+.mypy_cache/
+
+# Java / Maven
+.target/
+target/
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+
+# Module-specific
+java/Neural\ Network/bin/
+
+# Misc
+.svn/
