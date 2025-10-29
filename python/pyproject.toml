@@ -33,7 +33,7 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.black]
-line-length =在第100
+line-length = 100
 target-version = ["py38", "py39", "py310", "py311"]
 
 [tool.pytest.ini_options]
