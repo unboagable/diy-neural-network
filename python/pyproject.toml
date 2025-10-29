@@ -28,11 +28,19 @@ dev = [
     "mypy>=1.0.0",
 ]
 
+[project.scripts]
+diy-train = "diy_neural_network.train_model:main"
+diy-predict = "diy_neural_network.predict:main"
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+# Include scripts as part of the package for entry points
+[tool.setuptools.package-data]
+"*" = ["*.txt", "*.md"]
 
 [tool.black]
 line-length = 100

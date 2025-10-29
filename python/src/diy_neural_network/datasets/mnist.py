@@ -6,6 +6,7 @@ try:
 except ImportError:
     from tensorflow.keras.datasets import mnist
 import matplotlib.pyplot as plt
+import logging
 
 
 def load_mnist(normalize: bool = True) -> Tuple[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]:
@@ -59,11 +60,14 @@ if __name__ == "__main__":
     # Load the MNIST dataset (normalized)
     (X_train, y_train), (X_test, y_test) = load_mnist(normalize=True)
     
-    print(f"Training set: {X_train.shape[0]} samples")
-    print(f"Test set: {X_test.shape[0]} samples")
-    print(f"Image shape: {X_train.shape[1:]}")
-    print(f"Pixel value range: [{X_train.min():.2f}, {X_train.max():.2f}]")
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    logger.info(f"Training set: {X_train.shape[0]} samples")
+    logger.info(f"Test set: {X_test.shape[0]} samples")
+    logger.info(f"Image shape: {X_train.shape[1:]}")
+    logger.info(f"Pixel value range: [{X_train.min():.2f}, {X_train.max():.2f}]")
     
     # Visualize 4 training samples
     visualize_samples(X_train, y_train, n_samples=4)
+
 

@@ -1,0 +1,4 @@
+# This directory will contain saved model files
+# Models are generated when training and should not be committed to git
+
+
